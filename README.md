@@ -2,11 +2,7 @@
 
 **A lightweight, offline Windows application for extracting numerical data from images of 2D plots.**
 
-![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4)
-![Works offline](https://img.shields.io/badge/works-offline-2E7D32)
-![License: MIT](https://img.shields.io/badge/license-MIT-6F42C1)
 
-![CurveTrace interface](docs/curvetrace-screenshot.png)
 
 CurveTrace turns plot images into reusable numerical data. Calibrate the axes using four reference points, trace one or more curves, adjust the extracted points visually, and export the results as CSV files.
 
