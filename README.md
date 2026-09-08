@@ -2,6 +2,7 @@
 
 **A lightweight, offline Windows application for extracting numerical data from images of 2D plots.**
 
+<img width="1919" height="1079" alt="Screenshot " src="https://github.com/user-attachments/assets/497c9eb1-3d9a-4c4b-a4f8-b24f873f3aac" />
 
 
 CurveTrace turns plot images into reusable numerical data. Calibrate the axes using four reference points, trace one or more curves, adjust the extracted points visually, and export the results as CSV files.
@@ -116,6 +117,4 @@ Do not include confidential or copyrighted plot images unless you have permissio
 
 CurveTrace was designed and developed with assistance from ChatGPT. The project demonstrates how AI-assisted software development can be used to rapidly turn a practical research need into a functional desktop application.
 
-## License
 
-This project is distributed under the [MIT License](LICENSE).
