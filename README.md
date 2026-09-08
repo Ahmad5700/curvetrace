@@ -1,175 +1,125 @@
 # CurveTrace
 
-**A lightweight, offline Windows app for extracting numerical data from images of 2D plots.**
+**A lightweight, offline Windows application for extracting numerical data from images of 2D plots.**
 
-[![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4)](#requirements)
-[![Works offline](https://img.shields.io/badge/works-offline-2E7D32)](#privacy)
-[![License: MIT](https://img.shields.io/badge/license-MIT-6F42C1)](LICENSE)
+![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4)
+![Works offline](https://img.shields.io/badge/works-offline-2E7D32)
+![License: MIT](https://img.shields.io/badge/license-MIT-6F42C1)
 
-![CurveTrace interface — replace this placeholder with the real screenshot before publishing](docs/curvetrace-screenshot.png)
+![CurveTrace interface](docs/curvetrace-screenshot.png)
 
-> The included image is a clearly marked placeholder. Before publishing, replace
-> `docs/curvetrace-screenshot.png` with a real screenshot by following
-> [the screenshot guide](docs/SCREENSHOT_GUIDE.md).
+CurveTrace turns plot images into reusable numerical data. Calibrate the axes using four reference points, trace one or more curves, adjust the extracted points visually, and export the results as CSV files.
 
-CurveTrace turns a plot image into reusable numerical data. Calibrate the axes
-with four reference points, trace one or more curves, adjust the points visually,
-and export the result as CSV. Everything runs locally, and saved project files
-embed the original image so the work can be reopened later.
+Everything runs locally on your computer. No internet connection, account, or cloud upload is required.
 
 ## Highlights
 
-- Four-point X/Y calibration with a guide grid
-- Linear or logarithmic scale on each axis
-- Support for rotated and slightly skewed plots
-- Multiple independently named and colored datasets
-- Connected points that can be added, inserted, dragged, nudged, or deleted
-- Cursor magnifier for precise placement at high zoom
-- Per-dataset and combined CSV export
-- Portable `.curvetrace` project files with the source image embedded
-- Offline, dependency-free browser interface
-- Tiny portable Windows launcher; no installer required
+* Four-point X/Y axis calibration with a visual guide grid
+* Linear or logarithmic scaling for each axis
+* Support for rotated and slightly skewed plot images
+* Multiple independently named and colored datasets
+* Connected points that can be added, inserted, dragged, nudged, or deleted
+* Click a line segment to insert an additional point
+* Zoom and pan controls for accurate point placement
+* Cursor magnifier for detailed tracing at high zoom
+* Editable dataset colors and names
+* CSV export of extracted numerical data
+* Project saving and reopening with the original image embedded
+* Fully offline operation
+* Lightweight interface designed for Windows
 
-## Download
+## Download and Installation
 
-For most users, download `CurveTrace_Windows_Portable_v1.0.zip` from the
-[latest GitHub Release](../../releases/latest), extract it, and double-click
-`CurveTrace.exe`.
+1. Open the **Releases** section of this repository.
+2. Download the latest Windows release.
+3. Extract the downloaded ZIP file if necessary.
+4. Run `CurveTrace.exe`.
 
-The Windows executable is currently unsigned. Windows may therefore identify it
-as an unrecognized app. You can verify the supplied SHA-256 checksums or inspect
-and build the source before running it. `CurveTrace.html` is also included as a
-transparent browser-based fallback.
+CurveTrace is portable and does not require a traditional installation unless otherwise stated in the release notes.
 
-## Requirements
+> Windows may display a security warning when opening an unsigned application downloaded from the internet. If you downloaded CurveTrace from this repository, select **More info** and then **Run anyway**.
 
-- 64-bit Windows 10 or Windows 11
-- Microsoft Edge or Google Chrome installed
-- No internet connection, installer, administrator access, or runtime package
+## How to Use
 
-CurveTrace uses the installed Edge or Chrome rendering engine in an app-only
-window. If neither executable can be found by name, the HTML app opens in the
-default browser.
+### 1. Load a plot image
 
-## Quick start
+Open an image containing the 2D plot you want to digitize.
 
-1. Open `CurveTrace.exe`.
-2. Open, paste, or drag a plot image into the app.
-3. Enter the known values for **X1**, **X2**, **Y1**, and **Y2**.
-4. Drag the four calibration nodes to the corresponding locations on the image.
-5. Choose linear or logarithmic scaling independently for X and Y.
-6. Select **Finish calibration**. The calibration nodes and grid are hidden.
-7. Click along a curve to create connected points in the active dataset.
-8. Export a dataset as CSV, export all datasets together, or save the project.
+### 2. Calibrate the axes
 
-## Editing controls
+Enter the known minimum and maximum values for the X and Y axes. Place the four calibration markers on their corresponding positions in the image.
 
-| Action | Control |
-|---|---|
-| Add a point | Click the plot in dataset mode |
-| Move a point | Drag it |
-| Select a point | Click it |
-| Delete a point | Select it, then press `Delete` or `Backspace` |
-| Insert between two points | Click their connecting line |
-| Fine adjustment | Arrow keys |
-| Larger adjustment | `Shift` + arrow key |
-| Zoom around cursor | Mouse wheel |
-| Pan | Hold `Space` and drag |
-| Show calibration nodes and grid | Select **Calibration** |
-| Return to tracing | Select **Finish calibration** |
+Select linear or logarithmic scaling for each axis as required.
 
-## Calibration model
+### 3. Create a dataset
 
-CurveTrace maps image positions into plot coordinates using the four reference
-nodes. This handles translation, rotation, independent axis lengths, and mild
-axis skew. It does not currently correct perspective distortion from a photo
-taken at an angle; for best results, use a scan or a straight-on photograph.
+Select the default dataset or add additional datasets. Each dataset can have its own name and color.
 
-## Files and exports
+### 4. Trace the curve
 
-### Dataset CSV
+Activate a dataset and click along the curve to add points. Points are connected in the order in which they are created.
 
-An individual dataset contains:
+You can:
 
-```text
-point,x,y,image_pixel_x,image_pixel_y
-```
+* Drag a point to reposition it.
+* Click a line segment to insert a new point.
+* Select a point and press `Delete` to remove it.
+* Use the zoom and magnifier tools for precise placement.
 
-The combined CSV adds a leading `dataset` column. CSV files are UTF-8 with a byte
-order mark for reliable display in spreadsheet software and import cleanly into
-tools such as Excel, MATLAB, Python, and R.
+### 5. Export the data
 
-### Project file
+Export the extracted coordinates as a CSV file for use in MATLAB, Python, Excel, Origin, or other data-analysis software.
 
-A `.curvetrace` project stores:
+## Supported Images
 
-- The source image
-- Calibration points and values
-- Linear/log scale settings
-- Grid settings
-- Dataset names, colors, point coordinates, and point order
+CurveTrace is intended for ordinary raster images of 2D plots, including:
 
-Because the image is embedded, no separate image file is required when a project
-is reopened.
+* Screenshots
+* Scanned figures
+* Images exported from PDF documents
+* Photographs of printed plots
+
+For the best results, use a clear, high-resolution image in which the axis positions and curve are visible.
 
 ## Privacy
 
-CurveTrace performs its work locally and contains no analytics, ads, user
-accounts, or network requests. Plot images and extracted data remain on your
-computer unless you share the exported files yourself.
+CurveTrace works entirely offline. Plot images, project files, and extracted datasets remain on your computer and are not uploaded to any server.
 
-## Build from source
+## Typical Applications
 
-The browser app is plain HTML, CSS, and JavaScript. The small native launcher
-embeds that HTML and opens it in app mode.
+CurveTrace can be used to recover data from:
 
-The provided build script requires Node.js plus a GNU C++/binutils toolchain
-capable of producing a 64-bit Windows PE executable:
+* Scientific publications
+* Datasheets
+* Technical reports
+* Simulation results
+* Measurement plots
+* Legacy figures for which the original data are unavailable
 
-```bash
-chmod +x build.sh
-./build.sh
-```
+Please respect copyright, licensing terms, and data-usage restrictions when extracting information from published material.
 
-Run the automated tests independently with:
+## Limitations
 
-```bash
-node tools_bundle.js
-node tests/core.test.js
-node tests/structure.test.js
-```
+* Curve tracing is performed manually.
+* Extraction accuracy depends on image resolution and calibration accuracy.
+* Highly distorted, blurred, or perspective-skewed images may reduce accuracy.
+* CurveTrace does not reconstruct hidden or overlapping data.
 
-## Current limitations
+## Reporting Problems
 
-- Manual tracing only; there is no automatic curve detection yet.
-- Perspective correction is not implemented.
-- The initial release imports raster images, not PDF pages directly.
-- The executable is not code-signed.
+If you find a bug or have a feature request, open an issue in this repository. Please include:
 
-## Development provenance
+* A short description of the problem
+* Steps to reproduce it
+* Your Windows version
+* A screenshot, when helpful
 
-CurveTrace began with the project author's concept, workflow, and acceptance
-decisions. The first functional prototype—including the interface,
-rotation-aware calibration, portable launcher, tests, and documentation—was
-implemented in approximately **one hour** during a single collaborative session
-with [OpenAI Codex in ChatGPT Work](https://learn.chatgpt.com/docs/developers).
+Do not include confidential or copyrighted plot images unless you have permission to share them.
 
-The coding agent was GPT-5-based, but the exact deployed model variant was not
-exposed to the session. This wording is intentionally more accurate than
-claiming an unverified model version.
+## Development
 
-AI-generated code can contain mistakes. The release includes automated checks,
-but Windows behavior should still be independently tested before relying on the
-software for critical scientific or engineering work.
-
-## Contributing and support
-
-Bug reports and focused improvements are welcome. Read
-[CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. For security
-issues, follow [SECURITY.md](SECURITY.md) rather than posting sensitive details
-in a public issue.
+CurveTrace was designed and developed with assistance from ChatGPT. The project demonstrates how AI-assisted software development can be used to rapidly turn a practical research need into a functional desktop application.
 
 ## License
 
-CurveTrace is available under the [MIT License](LICENSE).
-
+This project is distributed under the [MIT License](LICENSE).
