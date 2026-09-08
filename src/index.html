@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>CurveTrace</title>
+  <link rel="stylesheet" href="styles.css" data-bundle>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand" aria-label="CurveTrace">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 28 28"><path d="M4 21.5c4.5 0 5.5-14 10-14s5 12.5 10 5.5"/><circle cx="4" cy="21.5" r="2"/><circle cx="14" cy="7.5" r="2"/><circle cx="24" cy="13" r="2"/></svg>
+        </span>
+        <span class="brand-name">CurveTrace</span>
+        <span class="version">1.0</span>
+      </div>
+
+      <nav class="top-actions" aria-label="Project actions">
+        <button class="button primary" id="openImageButton" type="button">
+          <span class="button-icon" aria-hidden="true">▧</span> Open image
+        </button>
+        <button class="button" id="openProjectButton" type="button">
+          <span class="button-icon" aria-hidden="true">↥</span> Open project
+        </button>
+        <button class="button" id="saveProjectButton" type="button" disabled>
+          <span class="button-icon" aria-hidden="true">▣</span> Save project
+        </button>
+      </nav>
+
+      <div class="project-state" id="projectState" aria-live="polite">
+        <span class="state-dot"></span><span id="projectStateText">No project</span>
+      </div>
+    </header>
+
+    <aside class="left-panel panel-scroll">
+      <section class="panel-section image-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Source</span>
+            <h2>Plot image</h2>
+          </div>
+        </div>
+        <button id="imageDropZone" class="image-drop-zone" type="button">
+          <span class="drop-icon" aria-hidden="true">＋</span>
+          <span class="drop-title" id="imageName">Choose or drop an image</span>
+          <span class="drop-detail" id="imageDetail">PNG, JPEG, BMP, GIF, WebP</span>
+        </button>
+      </section>
+
+      <section class="panel-section calibration-section">
+        <div class="section-heading calibration-heading">
+          <div>
+            <span class="eyebrow">Step 1</span>
+            <h2>Calibration</h2>
+          </div>
+          <span class="status-badge waiting" id="calibrationBadge">Waiting</span>
+        </div>
+
+        <button class="mode-button calibration" id="calibrationToggle" type="button" disabled>
+          <span class="mode-symbol" aria-hidden="true">⌖</span>
+          <span>
+            <strong id="calibrationToggleTitle">Show calibration</strong>
+            <small id="calibrationToggleHint">Display the four reference nodes and grid</small>
+          </span>
+        </button>
+
+        <div class="calibration-controls" id="calibrationControls">
+          <div class="axis-card x-axis-card">
+            <div class="axis-card-title">
+              <span class="axis-line x-line"></span>
+              <strong>X axis</strong>
+              <select id="xScale" aria-label="X axis scale" disabled>
+                <option value="linear">Linear</option>
+                <option value="log">Logarithmic</option>
+              </select>
+            </div>
+            <div class="calibration-pair">
+              <label>
+                <span>X1 value</span>
+                <input id="x1Value" type="number" value="0" step="any" disabled>
+              </label>
+              <button class="node-picker x-node" data-node="x1" type="button" disabled title="Select X1, then click or drag it on the image">X1</button>
+              <label>
+                <span>X2 value</span>
+                <input id="x2Value" type="number" value="1" step="any" disabled>
+              </label>
+              <button class="node-picker x-node" data-node="x2" type="button" disabled title="Select X2, then click or drag it on the image">X2</button>
+            </div>
+          </div>
+
+          <div class="axis-card y-axis-card">
+            <div class="axis-card-title">
+              <span class="axis-line y-line"></span>
+              <strong>Y axis</strong>
+              <select id="yScale" aria-label="Y axis scale" disabled>
+                <option value="linear">Linear</option>
+                <option value="log">Logarithmic</option>
+              </select>
+            </div>
+            <div class="calibration-pair">
+              <label>
+                <span>Y1 value</span>
+                <input id="y1Value" type="number" value="0" step="any" disabled>
+              </label>
+              <button class="node-picker y-node" data-node="y1" type="button" disabled title="Select Y1, then click or drag it on the image">Y1</button>
+              <label>
+                <span>Y2 value</span>
+                <input id="y2Value" type="number" value="1" step="any" disabled>
+              </label>
+              <button class="node-picker y-node" data-node="y2" type="button" disabled title="Select Y2, then click or drag it on the image">Y2</button>
+            </div>
+          </div>
+
+          <div class="grid-settings">
+            <span>Guide grid</span>
+            <label>X <input id="gridX" type="number" min="2" max="20" value="10" disabled></label>
+            <label>Y <input id="gridY" type="number" min="2" max="20" value="10" disabled></label>
+          </div>
+
+          <p class="calibration-message" id="calibrationMessage">Open an image to begin.</p>
+        </div>
+      </section>
+
+      <section class="panel-section datasets-section">
+        <div class="section-heading">
+          <div>
+            <span class="eyebrow">Step 2</span>
+            <h2>Datasets</h2>
+          </div>
+          <button class="icon-button add-dataset" id="addDatasetButton" type="button" disabled title="Add dataset" aria-label="Add dataset">＋</button>
+        </div>
+
+        <div class="dataset-list" id="datasetList" aria-label="Datasets"></div>
+
+        <div class="dataset-editor" id="datasetEditor">
+          <label class="full-field">
+            <span>Active dataset name</span>
+            <input id="datasetNameInput" type="text" maxlength="80" value="Dataset 1" disabled>
+          </label>
+          <div class="color-row">
+            <span>Line color</span>
+            <div class="color-swatches" id="colorSwatches" aria-label="Dataset color"></div>
+          </div>
+          <div class="button-grid">
+            <button class="button compact" id="exportDatasetButton" type="button" disabled>Save dataset CSV</button>
+            <button class="button compact" id="exportAllButton" type="button" disabled>Save combined CSV</button>
+            <button class="button compact danger-text" id="clearDatasetButton" type="button" disabled>Clear points</button>
+            <button class="button compact danger-text" id="deleteDatasetButton" type="button" disabled>Delete dataset</button>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <main class="workspace">
+      <div class="canvas-toolbar" aria-label="View controls">
+        <div class="mode-indicator" id="modeIndicator">
+          <span class="mode-dot"></span><strong>No image</strong>
+        </div>
+        <div class="toolbar-spacer"></div>
+        <button class="toolbar-button" id="zoomOutButton" type="button" disabled title="Zoom out">−</button>
+        <span class="zoom-readout" id="zoomReadout">100%</span>
+        <button class="toolbar-button" id="zoomInButton" type="button" disabled title="Zoom in">＋</button>
+        <button class="toolbar-button labeled" id="actualSizeButton" type="button" disabled title="Show at actual pixel size">1:1</button>
+        <button class="toolbar-button labeled" id="fitButton" type="button" disabled title="Fit image to window">Fit</button>
+      </div>
+
+      <div class="canvas-wrap" id="canvasWrap" tabindex="0" aria-label="Digitizing canvas">
+        <canvas id="plotCanvas"></canvas>
+        <div class="empty-state" id="emptyState">
+          <div class="empty-graphic" aria-hidden="true">
+            <svg viewBox="0 0 128 92"><rect x="8" y="7" width="112" height="78" rx="8"/><path d="M20 70h92M24 64c18-2 20-38 38-38s21 34 40 19"/><circle cx="24" cy="64" r="4"/><circle cx="62" cy="26" r="4"/><circle cx="102" cy="45" r="4"/></svg>
+          </div>
+          <h1>Open a plot image</h1>
+          <p>Then calibrate four known axis values and click along each curve.</p>
+          <button class="button primary large" id="emptyOpenButton" type="button">Open image</button>
+          <span>You can also drag an image here or paste from the clipboard.</span>
+        </div>
+        <div class="placement-tip hidden" id="placementTip">Click to place <strong id="placementNode">X1</strong></div>
+      </div>
+    </main>
+
+    <aside class="right-panel panel-scroll">
+      <section class="inspector-section">
+        <div class="section-heading compact-heading">
+          <div>
+            <span class="eyebrow">Precision view</span>
+            <h2>Magnifier</h2>
+          </div>
+          <select id="magnifierFactor" aria-label="Magnifier strength">
+            <option value="4">4×</option>
+            <option value="8" selected>8×</option>
+            <option value="12">12×</option>
+            <option value="16">16×</option>
+          </select>
+        </div>
+        <div class="magnifier-frame">
+          <canvas id="magnifierCanvas"></canvas>
+          <span class="magnifier-empty" id="magnifierEmpty">Move over image</span>
+        </div>
+      </section>
+
+      <section class="inspector-section coordinate-card">
+        <span class="eyebrow">Cursor data</span>
+        <div class="coordinate-row"><span>X</span><output id="cursorX">—</output></div>
+        <div class="coordinate-row"><span>Y</span><output id="cursorY">—</output></div>
+        <div class="pixel-row"><span>Image pixel</span><output id="cursorPixel">—</output></div>
+      </section>
+
+      <section class="inspector-section selected-card" id="selectedCard">
+        <div class="selected-heading">
+          <div>
+            <span class="eyebrow">Selection</span>
+            <h2 id="selectedTitle">No point selected</h2>
+          </div>
+          <span class="point-index" id="selectedIndex">—</span>
+        </div>
+        <div class="selected-values">
+          <label><span>X data</span><input id="selectedX" type="number" step="any" disabled></label>
+          <label><span>Y data</span><input id="selectedY" type="number" step="any" disabled></label>
+        </div>
+        <p id="selectedHint">Click a point to inspect or drag it.</p>
+        <button class="button compact danger-text full-width" id="deletePointButton" type="button" disabled>Delete selected point</button>
+      </section>
+
+      <section class="inspector-section help-card">
+        <span class="eyebrow">Controls</span>
+        <dl>
+          <div><dt>Left click</dt><dd>Add or select a point</dd></div>
+          <div><dt>Drag point</dt><dd>Move it precisely</dd></div>
+          <div><dt>Click line</dt><dd>Insert a point</dd></div>
+          <div><dt>Wheel</dt><dd>Zoom at cursor</dd></div>
+          <div><dt>Space + drag</dt><dd>Pan image</dd></div>
+          <div><dt>Delete</dt><dd>Remove selected point</dd></div>
+        </dl>
+      </section>
+    </aside>
+
+    <footer class="statusbar">
+      <span id="statusText">Ready</span>
+      <span class="status-spacer"></span>
+      <span id="pointCountText">0 points</span>
+      <span class="status-separator"></span>
+      <span id="imageSizeText">No image</span>
+    </footer>
+  </div>
+
+  <input id="imageFileInput" type="file" accept="image/png,image/jpeg,image/bmp,image/gif,image/webp,.png,.jpg,.jpeg,.bmp,.gif,.webp" hidden>
+  <input id="projectFileInput" type="file" accept=".curvetrace,.json,application/json" hidden>
+  <div class="toast-region" id="toastRegion" aria-live="polite" aria-atomic="true"></div>
+
+  <script src="core.js" data-bundle></script>
+  <script src="app.js" data-bundle></script>
+</body>
+</html>
